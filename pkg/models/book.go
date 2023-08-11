@@ -2,22 +2,22 @@ package models
 
 import (
 	"github.com/jinzhu/gorm"
-	"github.com/keshavkrishna/go-bookstore/config"
+	"github.com/keshavkrishna/go-bookstore/pkg/config"
 )
 
 var db *gorm.DB 
 
 type Book struct{
-	gorm.model
+	gorm.Model
 	Name string `gorm:""json:"name""`
-	Author string `json:"authr"`
+	Author string `json:"author"`
 	Publication string `json:"publication"`
 }
 
 func init(){
-	config.connect()
+	config.Connect()
 	db  = config.GetDB()
-	db.AutoMigrate(&Book())
+	db.AutoMigrate(&Book{})
 }
 func (b *Book) CreateBook() *Book{
 	db.NewRecord(b)
@@ -25,9 +25,9 @@ func (b *Book) CreateBook() *Book{
 	return b
 }
 
-func GetAllBooks(){
+func GetAllBooks() []Book{
 	var Books []Book
-	db.find(&Books)
+	db.Find(&Books)
 	return Books
 }
 
